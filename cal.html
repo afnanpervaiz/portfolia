@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />  
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>Image Hero + Sticky Navbar (Responsive)</title>
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,Segoe UI,Arial; color:#0e1320; background:#f6f8ff}
+
+  /* HERO IMAGE */
+  .image-hero{
+    position: relative;
+    height: 400px;
+    background: url("hi1.jpg") center/cover no-repeat;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#fff;
+  }
+  .image-hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.4),rgba(0,0,0,.3));
+  }
+  .caption{position:relative; z-index:1; padding:20px;}
+  .caption h1{font-size:clamp(24px,5vw,54px); font-weight:800; line-height:1.2}
+  .caption p{margin-top:10px; font-size:clamp(14px,2.4vw,20px); opacity:.9}
+
+  /* NAVBAR */
+  .navbar{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(255,255,255,.6);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0,0,0,.07);
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px;
+    padding:14px 20px;
+    transition: box-shadow .25s ease, background .25s ease;
+    flex-wrap: wrap;
+  }
+  .navbar.is-stuck{background: rgba(255,255,255,.9); box-shadow: 0 10px 24px rgba(0,0,0,.08);}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800}
+  .brand-badge{width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,#7ac7ff,#ff7ab6); display:grid; place-items:center; color:#032; font-weight:900;}
+
+  .links{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+  .links a{text-decoration:none; color:#0e1320; font-weight:600; padding:8px 10px; border-radius:8px;} 
+  .links .home{background:rosybrown; font-size:20px;}
+  .links a:hover{background:rosybrown;color:white;}
+
+  .cta{border:0; border-radius:999px; padding:10px 14px; font-weight:700; cursor:pointer; color:#032; background:linear-gradient(90deg,#7ac7ff,#ff7ab6); box-shadow:0 8px 18px rgba(122,199,255,.25);}
+
+  /* Mobile Nav */
+  .menu-toggle{display:none; font-size:24px; background:none; border:none; cursor:pointer;}
+  @media(max-width:768px){
+    .links{display:none; flex-direction:column; width:100%; gap:8px; margin-top:10px;}
+    .links.active{display:flex;}
+    .cta{align-self:flex-start}
+    .menu-toggle{display:block; color:#0e1320;}
+  }
+
+  /* CONTENT */
+  main{max-width:1100px; margin:0 auto; padding:24px 18px 80px}
+  .section,.section1{background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:22px; margin-top:18px; box-shadow:0 6px 20px rgba(16,24,40,.04);}
+  .section1{background:black; color:white;}
+  .section h2{margin-bottom:10px}
+
+  /* HOME */
+  .ho img {max-width: 100%; height: auto; border-radius: 20px;}
+  .ho{display:flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px;}
+  .h1{margin:20px; font-size: 40px; color:white;}
+  .h1 span{font-size:60px; display:block}
+  @media(max-width:768px){
+    .h1{font-size:28px}
+    .h1 span{font-size:38px}
+  }
+
+  .fav{display:flex; gap:14px; margin-top:20px;}
+  .fav a i{background:rosybrown; color:#fff; font-size:15px; padding:5px; border-radius:50%; transition:0.3s; width: 30px;}
+  .fav a i:hover{background:white; color:rosybrown;}
+
+  /* About */
+  #about{padding: 60px 20px; background: #fff;}
+  .section-title{font-size: 32px; margin-bottom: 20px; border-left: 4px solid #ff5e5e; padding-left: 10px;}
+  .about-content{display: flex; flex-wrap: wrap; align-items: center; gap: 30px;}
+  .about-img img{width: 280px; height: auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
+  .about-text{flex: 1; font-size: 16px; color: #444; line-height: 1.6;}
+  .btn{display: inline-block; background: #ff5e5e; color: #fff; padding: 10px 20px; border-radius: 5px; margin-top: 15px; text-decoration: none; transition: 0.3s;}
+  .btn:hover{background: #e14c4c;}
+
+  /* Skills */
+  .skills{margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 20px;}
+  .skill span{font-weight: bold; display: block; margin-bottom: 5px;}
+  .progress{background: #eee; border-radius: 5px; overflow: hidden;}
+  .progress-bar{background: #ff5e5e; color: #fff; padding: 5px; font-size: 14px; text-align: right; border-radius: 5px 0 0 5px;}
+
+  /* Services */
+  .section{padding: 40px 0; text-align: center; background: #f9f9f9;}
+  .circle{display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding: 20px;}
+  .circle::-webkit-scrollbar{height: 8px;}
+  .circle::-webkit-scrollbar-thumb{background: #ccc; border-radius: 4px;}
+  .circle1{flex: 0 0 auto; width: 160px; height: 160px; border-radius: 50%; background: seagreen; color: white; font-size: 1.1rem; font-weight: bold; display: flex; justify-content: center; align-items: center; text-align: center; scroll-snap-align: start; transition: transform 0.3s, background 0.3s;}
+  .circle1:hover{transform: scale(1.1); background: orange;}
+
+  /* Projects */
+  .card-custom:hover{transform: translateY(-5px);}
+  .card-body h6{color: gray; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
+  .btn-study{display: inline-flex; align-items: center; font-weight: 600; border: 1px solid #000; border-radius: 6px; padding: 8px 16px; text-decoration: none; color: #000; transition: all 0.3s ease;}
+  .btn-study i{margin-left: 8px; transition: transform 0.3s ease;}
+  .btn-study:hover{background: black; color: white;}
+  .btn-study:hover i{transform: translateX(5px);}
+  #projects{width: 100%;}
+
+  /* Footer */
+  footer{background:#0e1320; color:white; text-align:center; padding:20px 10px; margin-top:40px;}
+  footer a{color:#ff7ab6; text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+  <!-- HERO IMAGE -->
+  <header class="image-hero">
+    <div class="caption">
+      <h1>"Crafting digital experiences with code and creativity"</h1>
+      <p>Web Developer</p>
+    </div>
+  </header>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="nav">
+    <div class="brand">
+      <div class="brand-badge">Af</div>
+      Afnan developer
+    </div>
+    <button class="menu-toggle" id="menuBtn"><i class="fa fa-bars"></i></button>
+    <div class="links" id="navLinks">
+      <a class="home" href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#Services">Services</a>
+      <a href="#Projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <button class="cta" onclick="window.location='#contact'">Enroll Now</button>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main>
+    <!-- HOME -->
+    <section class="section1" id="home">
+      <div class="ho">
+        <img src="im.jpg" alt="profile">
+        <h1 class="h1">Here I am Afnan Fano 
+          <span>Web Developer</span>
+        </h1>
+      </div>
+      <div class="fav">
+        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+          <div class="about-img"><img src="imm.jpg" alt="My Photo"></div>
+          <div class="about-text">
+            <p>I’m Afnan pervaiz, a passionate Frontend Developer with skills in HTML, CSS, JavaScript, and React JS. I enjoy creating modern, responsive websites that deliver great user experiences.</p>
+            <a href="#contact" class="btn">Hire Me</a>
+          </div>
+        </div>
+        <div class="skills">
+          <div class="skill"><span>Design</span><div class="progress"><div class="progress-bar" style="width:85%">85%</div></div></div>
+          <div class="skill"><span>Development</span><div class="progress"><div class="progress-bar" style="width:90%">90%</div></div></div>
+          <div class="skill"><span>Responsive</span><div class="progress"><div class="progress-bar" style="width:95%">95%</div></div></div>
+          <div class="skill"><span>Marketing</span><div class="progress"><div class="progress-bar" style="width:85%">85%</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section" id="Services">
+      <h2>Our Services</h2>
+      <div class="circle">
+        <div class="circle1"><h2>HTML & CSS</h2></div>
+        <div class="circle1"><h2>JavaScript</h2></div>
+        <div class="circle1"><h2>React JS</h2></div>
+        <div class="circle1"><h2>Python</h2></div>
+        <div class="circle1"><h2>Node JS</h2></div>
+        <div class="circle1"><h2>UI/UX</h2></div>
+        <div class="circle1"><h2>Bootstrap</h2></div>
+        <div class="circle1"><h2>Database</h2></div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="Projects">
+      <div class="container py-5">
+        <div class="row g-4">
+          <div class="col-md-4"><div class="card card-custom"><img src="pr2.png" class="card-img-top"><div class="card-body"><h6>UI-UX Design</h6><h5 class="card-title">Product Admin Dashboard</h5><p>I focus on crafting smooth, responsive interfaces that balance aesthetic appeal with practical functionality.</p><a href="#" class="btn-study">Case Study <i class="bi bi-arrow-right"></i></a></div></div></div>
+          <div class="col-md-4"><div class="card card-custom"><img src="p4.png" class="card-img-top"><div class="card-body"><h6>UI-UX Design</h6><h5 class="card-title">Product Admin Dashboard</h5><p>Designed an intuitive dashboard for product management, emphasizing clarity and user efficiency.</p><a href="#" class="btn-study">Case Study <i class="bi bi-arrow-right"></i></a></div></div></div>
+          <div class="col-md-4"><div class="card card-custom"><img src="p2.png" class="card-img-top"><div class="card-body"><h6>UI-UX Design</h6><h5 class="card-title">Product Admin Dashboard</h5><p>Developed a modern admin panel focused on usability and seamless navigation for end users.</p><a href="#" class="btn-study">Case Study <i class="bi bi-arrow-right"></i></a></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-5" style="background-color:#f8f9fa;">
+      <div class="container">
+        <h2 class="text-center mb-4">Get in Touch</h2>
+        <p class="text-center mb-5">Have questions? We'd love to hear from you!</p>
+        <div class="row">
+          <div class="col-md-6">
+            <form>
+              <div class="mb-3"><label class="form-label">Your Name</label><input type="text" class="form-control" placeholder="Enter your name"></div>
+              <div class="mb-3"><label class="form-label">Your Email</label><input type="email" class="form-control" placeholder="Enter your email"></div>
+              <div class="mb-3"><label class="form-label">Message</label><textarea class="form-control" rows="5" placeholder="Type your message"></textarea></div>
+              <button type="submit" class="btn btn-warning">Send Message</button>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <h5>Contact Information</h5>
+            <p><i class="bi bi-geo-alt-fill text-warning"></i> 123 Fruit Street, Karachi, Pakistan</p>
+            <p><i class="bi bi-telephone-fill text-warning"></i> +92 300 1234567</p>
+            <p><i class="bi bi-envelope-fill text-warning"></i> info@fruitkha.com</p>
+            <div class="mt-3"><iframe src="https://www.google.com/maps/embed?pb=!1m18!..." width="100%" height="250" style="border:0;" allowfullscreen loading="lazy"></iframe></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Afnan Developer | All Rights Reserved</p>
+    <p><a href="#home">Back to Top</a></p>
+  </footer>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<script>
+  const nav = document.getElementById('nav');
+  const STICKY_AT = 430; 
+  function onScroll(){if (window.scrollY >= STICKY_AT){nav.classList.add('is-stuck');} else {nav.classList.remove('is-stuck');}}
+  document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // Mobile toggle
+  const menuBtn = document.getElementById("menuBtn");
+  const navLinks = document.getElementById("navLinks");
+  menuBtn.addEventListener("click", function(){
+    navLinks.classList.toggle("active");
+    menuBtn.innerHTML = navLinks.classList.contains("active") 
+      ? '<i class="fa fa-times"></i>' 
+      : '<i class="fa fa-bars"></i>';
+  });
+
+  // Auto close menu on link click (mobile)
+  document.querySelectorAll("#navLinks a").forEach(link=>{
+    link.addEventListener("click", ()=>{navLinks.classList.remove("active"); menuBtn.innerHTML='<i class="fa fa-bars"></i>';});
+  });
+</script>
+</body>
+</html>
